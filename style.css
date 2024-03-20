@@ -1,0 +1,101 @@
+html {
+  height: 100%;
+}
+
+body {
+  font-family: sans-serif;
+  background: rgb(0, 212, 255);
+  background: linear-gradient(
+    180deg,
+    rgba(9, 9, 121, 1) 15%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100%;
+  margin: 0;
+  color: white;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.content {
+  margin: 0 auto;
+  padding: 2rem;
+  width: fit-content;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.wrapper-flex {
+  display: flex;
+}
+
+.wrapper-center {
+  justify-content: center;
+}
+
+form {
+  margin-bottom: 3rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.2rem;
+  background-color: white;
+  padding: 0.4rem;
+  border-radius: 2rem;
+}
+
+.info-display {
+  visibility: hidden;
+}
+
+.info-display.visible {
+  visibility: visible;
+}
+
+#location {
+  border-radius: 2rem;
+  border-style: none;
+  margin: 0;
+  /* width: 30rem; */
+  /* TODO this */
+  width: auto;
+}
+
+#location:focus {
+  outline: none;
+}
+
+#location.small {
+  width: auto;
+}
+
+button[type="submit"] {
+  color: white;
+  border-radius: 2rem;
+  border-style: none;
+}
+
+.date {
+  font-size: 1.5rem;
+}
+
+.city-name {
+  margin-top: rem;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.temperature {
+  font-size: 8rem;
+  margin: 2rem 0;
+}
+
+.description {
+  margin-top: 1rem;
+}
