@@ -41,7 +41,7 @@ p {
 }
 
 form {
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   display: flex;
   justify-content: center;
   gap: 0.2rem;
@@ -92,7 +92,7 @@ button[type="submit"] {
 }
 
 .temperature {
-  font-size: 8rem;
+  font-size: clamp(4rem, 10vw, 8rem);
   margin: 2rem 0;
 }
 
