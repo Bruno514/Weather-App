@@ -8,7 +8,7 @@ function getLatLon() {
     const location = document.querySelector("#location").value;
 
     let request = fetch(
-      `http://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=1&appid=${APIKEY}`,
+      `https://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=1&appid=${APIKEY}`,
       { mode: "cors" }
     );
 
