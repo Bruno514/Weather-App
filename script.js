@@ -48,24 +48,24 @@ async function getWeatherData() {
 }
 
 function getDateString() {
-  const day = new Date().toLocaleString("en-US", {weekday: 'long'});
-  const month = new Date().getMonth() + 1;
-  const monthLong = new Date().toLocaleString("en-US", {month: 'long'});
-  return `${day}, ${monthLong} ${month}`
+  const day = new Date().getDate();
+  const dayLong = new Date().toLocaleString("en-US", { weekday: "long" });
+  const monthLong = new Date().toLocaleString("en-US", { month: "long" });
+  return `${dayLong}, ${monthLong} ${day}`;
 }
 
 locationForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   // Hide info display for now
-  document.querySelector(".info-display").classList.remove("visible")
+  document.querySelector(".info-display").classList.remove("visible");
 
-  // Show loader 
-  document.querySelector(".loader").classList.add("visible")
+  // Show loader
+  document.querySelector(".loader").classList.add("visible");
 
   try {
     const data = await getWeatherData();
-  
+
     const temperatureConverted = Math.round(data.main.temp - 273.15);
     const dateString = getDateString();
     const city = data.name;
@@ -76,18 +76,21 @@ locationForm.addEventListener("submit", async (event) => {
     iconElement.src = iconSrc;
 
     // Make info visible and change width of input
-    document.querySelector(".info-display").classList.add("visible")
-    document.querySelector("input#location").classList.add("small")
+    document.querySelector(".info-display").classList.add("visible");
+    document.querySelector("input#location").classList.add("small");
 
     // Hide loader
-  document.querySelector(".loader").classList.remove("visible")
+    document.querySelector(".loader").classList.remove("visible");
 
     // Alter info
-    document.querySelector(".temperature").textContent = `${temperatureConverted}°`
-    document.querySelector(".date").textContent = `${dateString}`
-    document.querySelector(".description").textContent = `${description.charAt(0).toUpperCase() + description.slice(1)}` // Capitalize
-    document.querySelector(".city-name").textContent = `${city}` // Capitalize
-
+    document.querySelector(
+      ".temperature"
+    ).textContent = `${temperatureConverted}°`;
+    document.querySelector(".date").textContent = `${dateString}`;
+    document.querySelector(".description").textContent = `${
+      description.charAt(0).toUpperCase() + description.slice(1)
+    }`; // Capitalize
+    document.querySelector(".city-name").textContent = `${city}`; // Capitalize
   } catch (error) {
     console.log("Error: " + error);
   }
