@@ -47,6 +47,13 @@ async function getWeatherData() {
   }
 }
 
+function getDateString() {
+  const day = new Date().toLocaleString("en-US", {weekday: 'long'});
+  const month = new Date().getMonth() + 1;
+  const monthLong = new Date().toLocaleString("en-US", {month: 'long'});
+  return `${day}, ${monthLong} ${month}`
+}
+
 locationForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -58,11 +65,10 @@ locationForm.addEventListener("submit", async (event) => {
 
   try {
     const data = await getWeatherData();
-    console.log(data)
   
     const temperatureConverted = Math.round(data.main.temp - 273.15);
+    const dateString = getDateString();
     const city = data.name;
-    console.log(data.name)
     const description = data.weather[0].description;
     const iconElement = document.querySelector(".icon");
     const iconId = data.weather[0].icon;
@@ -78,6 +84,7 @@ locationForm.addEventListener("submit", async (event) => {
 
     // Alter info
     document.querySelector(".temperature").textContent = `${temperatureConverted}°`
+    document.querySelector(".date").textContent = `${dateString}`
     document.querySelector(".description").textContent = `${description.charAt(0).toUpperCase() + description.slice(1)}` // Capitalize
     document.querySelector(".city-name").textContent = `${city}` // Capitalize
 
