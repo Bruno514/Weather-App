@@ -53,6 +53,9 @@ locationForm.addEventListener("submit", async (event) => {
   // Hide info display for now
   document.querySelector(".info-display").classList.remove("visible")
 
+  // Show loader 
+  document.querySelector(".loader").classList.add("visible")
+
   try {
     const data = await getWeatherData();
     console.log(data)
@@ -69,6 +72,9 @@ locationForm.addEventListener("submit", async (event) => {
     // Make info visible and change width of input
     document.querySelector(".info-display").classList.add("visible")
     document.querySelector("input#location").classList.add("small")
+
+    // Hide loader
+  document.querySelector(".loader").classList.remove("visible")
 
     // Alter info
     document.querySelector(".temperature").textContent = `${temperatureConverted}°`
