@@ -50,6 +50,9 @@ async function getWeatherData() {
 locationForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
+  // Hide info display for now
+  document.querySelector(".info-display").classList.remove("visible")
+
   try {
     const data = await getWeatherData();
     console.log(data)

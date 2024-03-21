@@ -52,10 +52,13 @@ form {
 
 .info-display {
   visibility: hidden;
+  opacity: 0;
+  transition: all 2s;
 }
 
 .info-display.visible {
   visibility: visible;
+  opacity: 1;
 }
 
 #location {
