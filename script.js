@@ -1,52 +1,58 @@
 const APIKEY = "83e5b2e29e34a6651b74d699800634e6";
 
-// Event handling
-const locationForm = document.querySelector("form");
-const localeValue = document.querySelector("select").value;
-
-function getLatLon() {
+function getLatLon(limit) {
   return new Promise((resolve, reject) => {
     const location = document.querySelector("#location").value;
 
     let request = fetch(
-      `https://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=1&appid=${APIKEY}`,
+      `https://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=${limit}&appid=${APIKEY}`,
       { mode: "cors" }
     );
 
     request
       .then((response) => {
         if (!response.ok) {
-          reject(response.status);
+          let err = new Error("HTTP status code: " + response.status);
+          err.response = response;
+          err.status = response.status;
+          reject(err);
         }
+
         return response.json();
       })
-      .then((response) => resolve(response));
+      .then((response) => {
+        // Check if response contains data
+        if (response.length) {
+          resolve(response);
+        }
+
+        const err = new Error("City not found");
+        reject(err);
+      });
   });
 }
 
 async function getWeatherData() {
   const lang = document.querySelector("select").value.split(" ")[1];
-  
-  let [data, err] = await getLatLon()
-    .then((v) => [v, null])
-    .catch((e) => [null, e]);
-
-  if (err) {
-    throw new Error(err);
-  }
-
-  const lat = data[0].lat;
-  const lon = data[0].lon;
-
-  const URL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&lang=${lang}&appid=${APIKEY}`;
 
   try {
-    let request = await fetch(URL, { mode: "cors" });
-    let requestJson = await request.json();
+    let data = await getLatLon(1);
 
-    return requestJson;
-  } catch (error) {
-    throw error;
+    const lat = data[0].lat;
+    const lon = data[0].lon;
+
+    const URL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&lang=${lang}&appid=${APIKEY}`;
+
+    try {
+      let request = await fetch(URL, { mode: "cors" });
+      let requestJson = await request.json();
+
+      return requestJson;
+    } catch (err) {
+      throw err;
+    }
+  } catch (err) {
+    throw err;
   }
 }
 
@@ -55,9 +61,12 @@ function getDateString() {
   const day = new Date().getDate();
   const dayLong = new Date().toLocaleString(locale, { weekday: "long" });
   const monthLong = new Date().toLocaleString(locale, { month: "long" });
+
   return `${dayLong}, ${monthLong} ${day}`;
 }
 
+// Event setup
+const locationForm = document.querySelector("form");
 locationForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -69,11 +78,12 @@ locationForm.addEventListener("submit", async (event) => {
 
   try {
     const data = await getWeatherData();
-    console.log(data)
+    console.log(data);
 
     const temperatureConverted = Math.round(data.main.temp - 273.15);
     const dateString = getDateString();
     const city = data.name;
+    const country = data.sys.country;
     const description = data.weather[0].description;
     const iconElement = document.querySelector(".icon");
     const iconId = data.weather[0].icon;
@@ -95,8 +105,30 @@ locationForm.addEventListener("submit", async (event) => {
     document.querySelector(".description").textContent = `${
       description.charAt(0).toUpperCase() + description.slice(1)
     }`; // Capitalize
-    document.querySelector(".city-name").textContent = `${city}`; // Capitalize
+    document.querySelector(".city-name").textContent = `${city}, ${country}`; // Capitalize
   } catch (error) {
-    console.log("Error: " + error);
+    console.error(error);
+  }
+});
+
+// Some autocompletion
+const input = document.querySelector("input#location");
+input.addEventListener("keyup", async (event) => {
+  try {
+    console.log(1)
+    const cities = await getLatLon(15);
+
+    const datalist = document.querySelector("datalist#cities");
+    datalist.innerHTML = "";
+
+    cities.forEach((city) => {
+      const option = document.createElement("option");
+      option.value = city.name;
+
+      datalist.appendChild(option);
+    });
+  } 
+  catch (err) {
+    console.error(err);
   }
 });
