@@ -2,6 +2,7 @@ const APIKEY = "83e5b2e29e34a6651b74d699800634e6";
 
 // Event handling
 const locationForm = document.querySelector("form");
+const localeValue = document.querySelector("select").value;
 
 function getLatLon() {
   return new Promise((resolve, reject) => {
@@ -24,6 +25,8 @@ function getLatLon() {
 }
 
 async function getWeatherData() {
+  const lang = document.querySelector("select").value.split(" ")[1];
+  
   let [data, err] = await getLatLon()
     .then((v) => [v, null])
     .catch((e) => [null, e]);
@@ -35,7 +38,7 @@ async function getWeatherData() {
   const lat = data[0].lat;
   const lon = data[0].lon;
 
-  const URL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIKEY}`;
+  const URL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&lang=${lang}&appid=${APIKEY}`;
 
   try {
     let request = await fetch(URL, { mode: "cors" });
@@ -48,9 +51,10 @@ async function getWeatherData() {
 }
 
 function getDateString() {
+  const locale = document.querySelector("select").value.split(" ")[0];
   const day = new Date().getDate();
-  const dayLong = new Date().toLocaleString("en-US", { weekday: "long" });
-  const monthLong = new Date().toLocaleString("en-US", { month: "long" });
+  const dayLong = new Date().toLocaleString(locale, { weekday: "long" });
+  const monthLong = new Date().toLocaleString(locale, { month: "long" });
   return `${dayLong}, ${monthLong} ${day}`;
 }
 
@@ -65,6 +69,7 @@ locationForm.addEventListener("submit", async (event) => {
 
   try {
     const data = await getWeatherData();
+    console.log(data)
 
     const temperatureConverted = Math.round(data.main.temp - 273.15);
     const dateString = getDateString();

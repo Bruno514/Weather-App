@@ -133,3 +133,8 @@ button[type="submit"] {
 .loader.visible {
   display: block;
 }
+
+nav {
+  text-align: right;
+  padding: 0.1rem;
+}
