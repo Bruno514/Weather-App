@@ -4,7 +4,6 @@ const APIKEY_GEOAPIFY = "46472531fa224e08bcb7ed4ccf2eb86b";
 function getLatLon(limit, input) {
   return new Promise((resolve, reject) => {
     const location = input;
-    console.log(input)
 
     let request = fetch(
       `https://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=${limit}&appid=${APIKEY_OW}`,
@@ -120,6 +119,7 @@ async function displayWeatherData(input) {
 
     document.querySelector(".autocomplete-items").classList.remove("visible");
   } catch (error) {
+    document.querySelector(".loader").classList.remove("visible");
     console.error(error);
   }
 }
