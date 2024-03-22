@@ -44,7 +44,6 @@ p {
 
 form {
   display: flex;
-  justify-content: center;
   gap: 0.2rem;
   background-color: white;
   padding: 0.4rem;
@@ -137,4 +136,34 @@ button[type="submit"] {
 nav {
   text-align: right;
   padding: 0.1rem;
+}
+
+.autocomplete-items {
+  position: absolute;
+  top: 6.5rem;
+  color: #444;
+  display: block;
+  visibility: collapse;
+  text-align: left;
+  width: 12rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  z-index: 99;
+}
+
+.autocomplete-items > div {
+  border: 0.1rem solid #444;
+  padding: 0.2rem;
+}
+
+.autocomplete-items > div:hover {
+  background-color: #ddd;
+}
+
+.autocomplete-items > div:active {
+  background-color: #ccc;
+}
+
+.autocomplete-items.visible {
+  visibility: visible;
 }
