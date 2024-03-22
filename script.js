@@ -129,7 +129,7 @@ const locationForm = document.querySelector("form");
 locationForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  displayWeatherData();
+  displayWeatherData(document.querySelector("input").value);
 });
 
 // Some autocompletion
